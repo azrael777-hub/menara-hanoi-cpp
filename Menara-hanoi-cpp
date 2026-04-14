@@ -1,0 +1,86 @@
+#include <iostream>
+using namespace std;
+
+class Stack {
+private:
+    int data[10];
+    int top;
+
+public:
+    Stack() {
+        top = -1;
+    }
+
+    bool isEmpty() {
+        return top == -1;
+    }
+
+    bool isFull() {
+        return top == 9;
+    }
+
+    void push(int value) {
+        if (!isFull()) {
+            top++;
+            data[top] = value;
+        }
+    }
+
+    int pop() {
+        if (!isEmpty()) {
+            int value = data[top];
+            top--;
+            return value;
+        }
+        return -1;
+    }
+
+    int peek() {
+        if (!isEmpty()) {
+            return data[top];
+        }
+        return -1;
+    }
+};
+
+int langkah = 1;
+
+void hanoi(int n, Stack &asal, Stack &bantu, Stack &tujuan,
+            string namaAsal, string namaBantu, string namaTujuan) {
+
+    if (n == 1) {
+        int batu = asal.pop();
+        tujuan.push(batu);
+
+        cout << langkah << ". Pindahkan batu " << batu
+             << " dari " << namaAsal
+             << " ke " << namaTujuan << endl;
+        langkah++;
+        return;
+    }
+
+    hanoi(n - 1, asal, tujuan, bantu, namaAsal, namaTujuan, namaBantu);
+
+    int batu = asal.pop();
+    tujuan.push(batu);
+
+    cout << langkah << ". Pindahkan batu " << batu
+         << " dari " << namaAsal
+         << " ke " << namaTujuan << endl;
+    langkah++;
+
+    hanoi(n - 1, bantu, asal, tujuan, namaBantu, namaAsal, namaTujuan);
+}
+
+int main() {
+    Stack A, B, C;
+
+    // Batu dimasukkan dari terbesar ke terkecil
+    A.push(30);
+    A.push(20);
+    A.push(10);
+
+    hanoi(3, A, B, C, "A", "B", "C");
+
+    return 0;
+}
